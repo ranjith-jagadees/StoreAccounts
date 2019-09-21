@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import {} from "class-validator";
 import { ShopCustomers } from "./ShopCustomers";
 
 @Entity()

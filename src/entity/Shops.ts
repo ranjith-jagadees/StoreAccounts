@@ -1,5 +1,4 @@
 import {Entity, PrimaryGeneratedColumn, Column, PrimaryColumn, OneToMany} from "typeorm";
-import { Length, IsEmail, IsDate } from "class-validator";
 import { ShopCustomers } from "./ShopCustomers";
 
 @Entity()
@@ -8,8 +7,8 @@ export class Shops {
     @PrimaryGeneratedColumn()
     id: number;
     
-    @Column("bigint")
-    mobile: number;
+    @Column()
+    mobile: string;
 
     @Column()
     pin: string;
@@ -18,7 +17,6 @@ export class Shops {
     shopName: string;
 
     @Column()
-    @IsEmail()
     emailId : string
 
     @Column()
@@ -31,11 +29,9 @@ export class Shops {
     state: string;
 
     @Column()
-    @Length(6)
     pincode: string;
 
     @Column()
-    @IsDate()
     regDate: Date;
 
     @Column({default: false})

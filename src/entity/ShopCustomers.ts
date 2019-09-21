@@ -1,5 +1,4 @@
 import { Entity, PrimaryColumn, ManyToOne, JoinColumn, Column, Double, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { IsInt, Length } from "class-validator";
 import { Shops } from "./Shops";
 import { DataEntry } from "./DataEntry";
 
@@ -16,7 +15,6 @@ export class ShopCustomers{
     CusName : string;
 
     @Column()
-    @Length(10)
     MobileNum: string;
 
     @Column("double")
