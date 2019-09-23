@@ -19,13 +19,13 @@ export class DataEntry{
     @Column({nullable:true})
     credibit: string;
 
-    @Column()
+    @Column({nullable:true})
     date: Date;
 
-    @Column()
+    @Column({nullable:true})
     dateofentry: Date;
 
-    @ManyToOne(()=>ShopCustomers, shopCustomers=>shopCustomers)
+    @ManyToOne(()=>ShopCustomers, shopCustomers=>shopCustomers, {cascade:true})
     @JoinColumn()
     datas: ShopCustomers;
 

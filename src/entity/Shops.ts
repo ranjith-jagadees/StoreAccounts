@@ -3,12 +3,9 @@ import { ShopCustomers } from "./ShopCustomers";
 
 @Entity()
 export class Shops {
-
-    @PrimaryGeneratedColumn()
-    id: number;
     
-    @Column()
-    mobile: string;
+    @PrimaryGeneratedColumn({type:"bigint"})
+    mobile: number;
 
     @Column()
     pin: string;

@@ -15,12 +15,12 @@ export async function getallShop(req: Request, res: Response) {
 export async function newShopSignup(req: Request, res: Response) {
   let signupRepo = await getManager().getRepository(Shops);
   let signupDetails = new Shops();
-  let existingShop = await signupRepo.findOne({ mobile: req.body.mobile });
+  let existingShop = await signupRepo.findOne({ mobile: Number(req.body.mobile) });
   if (existingShop !== undefined) {
     res.status(404).send("Shop already registered with this mobile number");
   } else {
     if (req.body.pin == req.body.cpin) {
-      signupDetails.mobile = req.body.mobile;
+      signupDetails.mobile = Number(req.body.mobile);
       signupDetails.pin = await bcrypt.hash(req.body.pin, 10);
       signupDetails.shopName = req.body.shopName;
       signupDetails.emailId = req.body.email;
@@ -29,11 +29,6 @@ export async function newShopSignup(req: Request, res: Response) {
       signupDetails.state = req.body.state;
       signupDetails.pincode = req.body.pincode;
       signupDetails.regDate = new Date();
-
-      // console.log("Validation failed", errors);
-      // res.status(404).send(errors);
-
-      console.log("validation successfull");
       await signupRepo.save(signupDetails);
       res.send(
         "user signed up successfully, your account will get activated in 2 hours"
@@ -52,13 +47,12 @@ export async function newShopSignup(req: Request, res: Response) {
 
 export async function activateShop(req: Request, res: Response) {
   let activateShopRepo = await getManager().getRepository(Shops);
-  let nun = Number(req.params.mobile);
   let adminCheck = await activateShopRepo.findOne({
-    mobile: req.params.mobile
+    mobile: Number(req.body.mobile)
   });
   if (adminCheck.admin == true) {
     let activateShop = await activateShopRepo.findOne({
-      mobile: req.body.mobile
+      mobile: Number(req.body.mobile)
     });
     if (activateShop !== undefined) {
       activateShop.isApproved = true;
@@ -78,12 +72,14 @@ export async function login(req: Request, res: Response) {
   try {
     let loginShopRepo = await getManager().getRepository(Shops);
     let loginShop = await loginShopRepo.findOne({
-      mobile: req.body.mobile
+      mobile: Number(req.body.mobile)
     });
+    console.log(loginShop);
     if (loginShop !== undefined) {
       let bcryptCompare = await bcrypt.compare(req.body.pin, loginShop.pin);
+      console.log(bcryptCompare);
       if (bcryptCompare == true) {
-        let token = await generateToken(req.body.mobile);
+        let token = await generateToken(Number(req.body.mobile));
         res.json({ token, message: "User logged in successfully" });
       } else {
         res.status(404).send("Mobile Number and secure pin combination are not same");

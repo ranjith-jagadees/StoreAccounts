@@ -2,13 +2,7 @@ import "reflect-metadata";
 import * as express from "express";
 import * as cors from "cors";
 import { createConnection } from "typeorm";
-import { Shops } from "./entity/Shops";
-import * as jwt from "jsonwebtoken";
-import { ShopCustomers } from "./entity/ShopCustomers";
-import { DataEntry } from "./entity/DataEntry";
-import { verifyToken } from "./tokenauth";
-import * as bodyParser from "body-parser";
-import {AppRoutes} from "./routes/routes"
+import {AppRoutes} from "./routes/routes";
 import { Request, Response } from "express-serve-static-core";
 
 //Declare express server
@@ -30,13 +24,8 @@ createConnection()
         route.action(req, res)
         .then(()=>next)
         .catch(err=>next(err));
-      })
-    })
-
-
-
-    
-    //Start - Data Entry check
+      });
+    });
 
     //Declare port
     const port = process.env.PORT || 3000;

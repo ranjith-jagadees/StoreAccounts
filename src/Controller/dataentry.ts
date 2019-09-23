@@ -12,7 +12,7 @@ export async function customerDataEntry(req: Request, res: Response) {
     let mobile = await verifyToken(req.headers["authorization"]);
     let shopRepo = await getManager().getRepository(Shops);
     let shop = await shopRepo.findOne({
-      mobile: `${mobile}`
+      mobile: Number(mobile)
     });
     if (shop !== undefined) {
       let customerRepo = await getManager().getRepository(ShopCustomers);
@@ -24,18 +24,21 @@ export async function customerDataEntry(req: Request, res: Response) {
         console.log(customer);
         let dataEntryRepo = await getManager().getRepository(DataEntry);
         let dataEntry = new DataEntry();
-        if (req.body.amount !== undefined && req.body.credebit !== undefined) {
+        if (req.body.amount !== undefined && req.body.credibit !== undefined) {
           dataEntry.amount = Number(req.body.amount);
           let date = new Date();
           dataEntry.dateofentry = new Date();
           dataEntry.dateofentry.setFullYear(date.getFullYear());
           dataEntry.dateofentry.setMonth(date.getMonth());
           dataEntry.dateofentry.setDate(date.getDate());
-          dataEntry.date = new Date(2019, 8, 17); //Date in which debit/credit is done "Reqrite logic"
+          dataEntry.date = new Date(2019, 8, 17); //Date in which debit/credit is done "Rewrite logic"
           if (req.body.message !== undefined) {
             dataEntry.message = req.body.message;
           }
-          if (req.body.credebit == true) {
+          let credibit = Boolean(req.body.credibit);
+          console.log(typeof credibit);
+          console.log(credibit);
+          if (credibit== true) {
             dataEntry.credibit = "D";
             dataEntry.outstanding = customer.Outstanding;
             dataEntry.outstanding += dataEntry.amount;
@@ -48,8 +51,6 @@ export async function customerDataEntry(req: Request, res: Response) {
             dataEntry.outstanding = customer.Outstanding;
             dataEntry.outstanding -= dataEntry.amount;
             customer.Outstanding = dataEntry.outstanding;
-            console.log("hello");
-            console.log(dataEntry);
             dataEntry.datas = customer;
             await dataEntryRepo.save(dataEntry);
             res.send("Data Updated Successfully ");
@@ -75,7 +76,7 @@ export async function customerDataHistory(req: Request, res: Response) {
     let mobile = await verifyToken(req.headers["authorization"]);
     let shopRepo = await getManager().getRepository(Shops);
     let shop = await shopRepo.findOne({
-      mobile: `${mobile}`
+      mobile: Number(mobile)
     });
     if (shop !== undefined) {
       let customerRepo = await getManager().getRepository(ShopCustomers);

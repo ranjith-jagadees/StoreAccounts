@@ -45,7 +45,7 @@ export const AppRoutes = [
   //View all customers for a shop
   {
       path: "/api/view/customers",
-      method:"post",
+      method:"get",
       action: viewCustomer
   },
   //Edit Customers for a shop

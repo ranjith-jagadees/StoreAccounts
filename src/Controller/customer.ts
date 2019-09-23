@@ -11,7 +11,7 @@ export async function addCustomer(req: Request, res: Response) {
     let mobile = await verifyToken(req.headers["authorization"]);
     let shopRepo = await getManager().getRepository(Shops);
     let shop = await shopRepo.findOne({
-      mobile: `${mobile}`
+      mobile: Number(mobile)
     });
     if (shop !== undefined) {
       let customerRepo = await getManager().getRepository(ShopCustomers);
@@ -53,7 +53,7 @@ export async function viewCustomer(req: Request, res: Response) {
     let mobile = await verifyToken(req.headers["authorization"]);
     let shopRepo = await getManager().getRepository(Shops);
     let shop = await shopRepo.findOne({
-      mobile: `${mobile}`
+      mobile: Number(mobile)
     });
     if (shop !== undefined) {
       let viewCustomersRepo = await getManager().getRepository(ShopCustomers);
@@ -76,7 +76,7 @@ export async function editCustomer(req: Request, res: Response) {
     let mobile = await verifyToken(req.headers["authorization"]);
     let shopRepo = await getManager().getRepository(Shops);
     let shop = await shopRepo.findOne({
-      mobile: `${mobile}`
+      mobile: Number(mobile)
     });
     if (shop !== undefined) {
       let editCustomerRepo = await getManager().getRepository(ShopCustomers);
@@ -125,17 +125,27 @@ export async function deleteCustomer(req: Request, res: Response) {
     let mobile = await verifyToken(req.headers["authorization"]);
     let shopRepo = await getManager().getRepository(Shops);
     let shop = await shopRepo.findOne({
-      mobile: `${mobile}`
+      mobile: Number(mobile)
     });
     if (shop !== undefined) {
-      let editCustomerRepo = await getManager().getRepository(ShopCustomers);
-      let editCustomer = await editCustomerRepo.findOne({
+      let delCustomerRepo = await getManager().getRepository(ShopCustomers);
+      let delCustomer = await delCustomerRepo.findOne({
         customers: shop,
         cusNo: req.body.cusno
       });
-      if (editCustomer !== undefined) {
-        await editCustomerRepo.remove(editCustomer);
-        res.send("User Removed successfully");
+      if (delCustomer !== undefined) {
+        let delCustDataRepo = await getManager().getRepository(DataEntry);
+        let delCustomerData = await delCustDataRepo.find({
+          datas: delCustomer
+        });
+        if (delCustomerData !== undefined) {
+          await delCustDataRepo.remove(delCustomerData);
+          await delCustomerRepo.remove(delCustomer);
+          res.send("User Removed successfully");
+        } else {
+          await delCustomerRepo.remove(delCustomer);
+          res.send("User Removed successfully");
+        }
       } else {
         res.status(404).send("Invalid Request");
       }

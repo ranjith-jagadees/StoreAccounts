@@ -24,6 +24,6 @@ export class ShopCustomers{
     @JoinColumn()
     customers : Shops;
 
-    @OneToMany(()=>DataEntry, dataEntry=> dataEntry.datas, {cascade:true})
+    @OneToMany(()=>DataEntry, dataEntry=> dataEntry.datas)
     customer: DataEntry[];
 }
