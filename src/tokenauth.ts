@@ -5,12 +5,13 @@ import * as fs from "fs";
 
 export async function generateToken(mobile: number) {
   return new Promise((resolve: any, reject: any) => {
-    // let privateKey = fs.readFileSync("./private.key", "utf8");
-    let privateKey = "HelloWorld";
+    let privateKey = fs.readFileSync("./private.key", "utf8");
+
+    console.log(privateKey);
 
     let signOptions = {
-      expiresIn: "12h"
-      // algorithm: "RS256"
+      expiresIn: "12h",
+      algorithm: "RS256"
     };
 
     let payload = { mobile: `${mobile}` };
@@ -32,8 +33,7 @@ export async function generateToken(mobile: number) {
 
 export function verifyToken(bearerHeader) {
   return new Promise((resolve: any, reject: any) => {
-    // let publicKey = fs.readFileSync("./public.key", "utf8");
-    let publicKey = "HelloWorld";
+    let publicKey = fs.readFileSync("./public.key", "utf8");
     if (typeof bearerHeader !== undefined) {
       const bearer = bearerHeader.split(" ");
       const bearerToken = bearer[1];
