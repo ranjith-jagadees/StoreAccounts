@@ -4,7 +4,7 @@ import {
   activateShop,
   login
 } from "../Controller/auth";
-import { addCustomer, viewCustomer, editCustomer, deleteCustomer } from "../Controller/customer";
+import { addCustomer, viewCustomer, editCustomer, deleteCustomer, editPopup } from "../Controller/customer";
 import { customerDataEntry, customerDataHistory } from "../Controller/dataentry";
 
 export const AppRoutes = [
@@ -48,16 +48,22 @@ export const AppRoutes = [
       method:"get",
       action: viewCustomer
   },
+  //Edit customer Popup
+  {
+    path:"/api/edit/popup/:cusno",
+    method:"get",
+    action: editPopup
+  },
   //Edit Customers for a shop
   {
-      path:"/api/edit/customers",
-      method:"post",
+      path:"/api/edit/customers/:cusno",
+      method:"get",
       action: editCustomer
   },
   //Delete customers for a shop
   {
-      path:"/api/delete/customers",
-      method:"post",
+      path:"/api/delete/customers/:cusno",
+      method:"delete",
       action: deleteCustomer
   },
   //End - Customer details}
@@ -71,8 +77,8 @@ export const AppRoutes = [
   },
   //Data history for a customer
   {
-      path:"/api/customers/data",
-      method:"post",
+      path:"/api/customers/data/:cusno",
+      method:"get",
       action: customerDataHistory
   }
   //End - Customer Data}

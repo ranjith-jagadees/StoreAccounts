@@ -1,0 +1,49 @@
+// View all customer data
+{
+      path: "/api/view/customers",
+      method:"get",
+      action: viewCustomer
+  },
+to be displayed{
+cusno, name, outstanding
+}
+ //Edit customer Popup
+  {
+    path:"/api/edit/popup/:cusno",
+    method:"get",
+    action: editPopup
+  },
+  //Edit Customers for a shop
+  {
+      path:"/api/edit/customers",
+      method:"post",
+      action: editCustomer
+  },
+input{
+cusno, newcusno, name, mobile  }
+output{updated customer data}
+  //Delete customers for a shop
+  {
+      path:"/api/delete/customers/:cusno",
+      method:"delete",
+      action: deleteCustomer
+  },
+output{"User removed successfully"}
+  //End - Customer details}
+
+  //Start - Customer Data{
+  //Data entry for a customer
+  {
+      path:"/api/dataentry",
+      method:"post",
+      action: customerDataEntry
+  },
+input{cusno, Date, amount, credit/debit }
+output{if success, dataentry screen }
+  //Data history for a customer
+  {
+      path:"/api/customers/data/:cusno",
+      method:"get",
+      action: customerDataHistory
+  }
+output{Date, amount, credit/debit, outstanding}

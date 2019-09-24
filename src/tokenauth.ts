@@ -13,11 +13,11 @@ export async function generateToken(mobile: number) {
       // algorithm: "RS256"
     };
 
-    let payload = {mobile: `${mobile}`};
+    let payload = { mobile: `${mobile}` };
 
     console.log(payload);
 
-    jwt.sign(payload, privateKey, signOptions, ((err, token) => {
+    jwt.sign(payload, privateKey, signOptions, (err, token) => {
       if (err) {
         console.log(err);
         reject(err);
@@ -25,7 +25,7 @@ export async function generateToken(mobile: number) {
         console.log("token" + token);
         resolve(token);
       }
-    }));
+    });
   });
 }
 // End - Generate Token

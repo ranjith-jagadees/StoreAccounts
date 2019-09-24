@@ -81,7 +81,7 @@ export async function customerDataHistory(req: Request, res: Response) {
     if (shop !== undefined) {
       let customerRepo = await getManager().getRepository(ShopCustomers);
       let customer = await customerRepo.findOne({
-        cusNo: req.body.cusno,
+        cusNo: Number(req.params.cusno),
         customers: shop
       });
       if (customer !== undefined) {

@@ -70,6 +70,32 @@ export async function viewCustomer(req: Request, res: Response) {
 }
 //End - View Customers
 
+export async function editPopup(req:Request, res: Response){
+  try{
+    let mobile = await verifyToken(req.headers["authorization"]);
+    let shopRepo = await getManager().getRepository(Shops);
+    let shop = await shopRepo.findOne({
+      mobile: Number(mobile)
+    });
+    if (shop !== undefined) {
+      let editCustomerRepo = await getManager().getRepository(ShopCustomers);
+      let editCustomer = await editCustomerRepo.findOne({
+        cusNo: Number(req.params.cusno),
+        customers: shop
+      });
+      if (editCustomer !== undefined) {
+        res.send(JSON.stringify(editCustomer));
+      } else {
+        res.status(404).send('customer Number not exists');
+      }
+    } else {
+        res.status(404).send('Invalid Request');
+      }
+  } catch(err){
+    res.status(404).send(err);
+  }
+}
+
 //Start - Edit Customers
 export async function editCustomer(req: Request, res: Response) {
   try {
@@ -81,7 +107,7 @@ export async function editCustomer(req: Request, res: Response) {
     if (shop !== undefined) {
       let editCustomerRepo = await getManager().getRepository(ShopCustomers);
       let editCustomer = await editCustomerRepo.findOne({
-        cusNo: req.body.cusno,
+        cusNo: Number(req.params.cusno),
         customers: shop
       });
       if (editCustomer !== undefined) {
@@ -131,7 +157,7 @@ export async function deleteCustomer(req: Request, res: Response) {
       let delCustomerRepo = await getManager().getRepository(ShopCustomers);
       let delCustomer = await delCustomerRepo.findOne({
         customers: shop,
-        cusNo: req.body.cusno
+        cusNo: Number(req.params.cusno)
       });
       if (delCustomer !== undefined) {
         let delCustDataRepo = await getManager().getRepository(DataEntry);
