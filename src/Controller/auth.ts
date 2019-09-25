@@ -33,8 +33,6 @@ export async function newShopSignup(req: Request, res: Response) {
       res.send(
         "user signed up successfully, your account will get activated in 2 hours"
       );
-
-      // });
     } else {
       res.status(404).send("pin and confirm are not same");
     }
